@@ -1,28 +1,7 @@
 from flask import Flask, redirect, request, jsonify
-from dotenv import load_dotenv
-from pinecone import Pinecone
-from openai import OpenAI
 import requests
-import os
-
-load_dotenv()
-
-GROQ_API_KEY = os.getenv("GROQ_API_KEY")
-PINECONE_API_KEY = os.getenv("PINECONE_API_KEY")
-
-GITHUB_CLIENT_ID = os.getenv("GITHUB_CLIENT_ID")
-GITHUB_CLIENT_SECRET = os.getenv("GITHUB_CLIENT_SECRET")
-
 GITHUB_BASE_URL = "https://github.com/login/oauth"
 GITHUB_API_URL = "https://api.github.com"
-
-pc = Pinecone(api_key=PINECONE_API_KEY)
-pinecone_index = pc.Index("codebase-rag")
-
-client = OpenAI(
-    base_url="https://api.groq.com/openai/v1",
-    api_key=GROQ_API_KEY
-)
 
 app = Flask(__name__)
 
@@ -68,15 +47,5 @@ def callback():
 
     return jsonify(repos), 200
 
-@app.route("/api/config")
-def config():
-
-    config = {
-        "pinecone_index": pinecone_index,
-        "client": client
-    }
-
-    return jsonify(config), 200
-
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run("0.0.0.0", port=8000)

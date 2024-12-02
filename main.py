@@ -1,8 +1,13 @@
 from utils import clone_repository, embed_documents, get_main_files_content, perform_rag
 
+
+from dotenv import load_dotenv
+from pinecone import Pinecone
+from openai import OpenAI
 import streamlit as st
 import requests
 import json
+import os
 
 # repo_url = "https://github.com/CoderAgent/SecureAgent"
 
@@ -11,7 +16,24 @@ import json
 
 # embed_documents(file_content, "codebase-rag", repo_url)
 
-config = requests.get("https://selected-gently-swift.ngrok-free.app/api/config").json()
+load_dotenv()
+
+GROQ_API_KEY = os.getenv("GROQ_API_KEY")
+PINECONE_API_KEY = os.getenv("PINECONE_API_KEY")
+
+GITHUB_CLIENT_ID = os.getenv("GITHUB_CLIENT_ID")
+GITHUB_CLIENT_SECRET = os.getenv("GITHUB_CLIENT_SECRET")
+
+GITHUB_BASE_URL = "https://github.com/login/oauth"
+GITHUB_API_URL = "https://api.github.com"
+
+pc = Pinecone(api_key=PINECONE_API_KEY)
+pinecone_index = pc.Index("codebase-rag")
+
+client = OpenAI(
+    base_url="https://api.groq.com/openai/v1",
+    api_key=GROQ_API_KEY
+)
 
 st.title("Codebase Bot")
 
@@ -32,7 +54,7 @@ if prompt := st.chat_input("Message Codebase Bot"):
     # Add user message to chat history
     st.session_state.messages.append({"role": "user", "content": prompt})
 
-    response = perform_rag(prompt, config["pinecone_index"], config["client"])
+    response = perform_rag(prompt, pinecone_index, client)
     
     # Display assistant response in chat message container
     with st.chat_message("assistant"):
