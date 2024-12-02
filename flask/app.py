@@ -1,5 +1,13 @@
 from flask import Flask, redirect, request, jsonify
+from dotenv import load_dotenv
 import requests
+import os
+
+load_dotenv()
+
+GITHUB_CLIENT_ID = os.getenv("GITHUB_CLIENT_ID")
+GITHUB_CLIENT_SECRET = os.getenv("GITHUB_CLIENT_SECRET")
+
 GITHUB_BASE_URL = "https://github.com/login/oauth"
 GITHUB_API_URL = "https://api.github.com"
 
