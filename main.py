@@ -30,7 +30,7 @@ client = OpenAI(
 
 # embed_documents(file_content, "codebase-rag", repo_url)
 
-st.title("CodebaseBot")
+st.title("Codebase Bot")
 
 # Initialize chat history
 if "messages" not in st.session_state:
@@ -42,7 +42,7 @@ for message in st.session_state.messages:
         st.markdown(message["content"])
 
 # React to user input
-if prompt := st.chat_input("Message CodebaseBot"):
+if prompt := st.chat_input("Message Codebase Bot"):
     
     # Display user message in chat message container
     st.chat_message("user").markdown(prompt)
