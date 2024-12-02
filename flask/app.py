@@ -26,14 +26,14 @@ client = OpenAI(
 
 app = Flask(__name__)
 
-@app.route("/github/auth")
+@app.route("/")
 def auth():
     """Home route that redirects users to GitHub for authentication."""
     auth_url = f"{GITHUB_BASE_URL}/authorize?client_id={GITHUB_CLIENT_ID}&scope=repo"
     return redirect(auth_url)
 
-@app.route("/github/repos")
-def repos():
+@app.route("/github/callback")
+def callback():
     """Handles the GitHub callback with the authorization code."""
     code = request.args.get("code")
     if not code:
@@ -66,17 +66,17 @@ def repos():
     repos = repos_response.json()
     repos = {repo["name"]: repo["clone_url"] for repo in repos}
 
-    return jsonify(repos)
+    return jsonify(repos), 200
 
-@app.route("/")
-def home():
+@app.route("/api/config")
+def config():
 
     config = {
         "pinecone_index": pinecone_index,
         "client": client
     }
 
-    return jsonify(config)
+    return jsonify(config), 200
 
 if __name__ == "__main__":
     app.run(debug=True)

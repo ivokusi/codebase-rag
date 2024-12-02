@@ -11,7 +11,7 @@ import json
 
 # embed_documents(file_content, "codebase-rag", repo_url)
 
-config = requests.get("https://selected-gently-swift.ngrok-free.app/").json()
+config = requests.get("https://selected-gently-swift.ngrok-free.app/api/config").json()
 
 st.title("Codebase Bot")
 
