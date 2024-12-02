@@ -13,11 +13,12 @@ GITHUB_API_URL = "https://api.github.com"
 
 app = Flask(__name__)
 
-@app.route("/")
+@app.route("/github/auth")
 def auth():
     """Home route that redirects users to GitHub for authentication."""
+    print("Redirecting to GitHub for authentication...")
     auth_url = f"{GITHUB_BASE_URL}/authorize?client_id={GITHUB_CLIENT_ID}&scope=repo"
-    return redirect(auth_url)
+    return jsonify({"auth_url": auth_url}), 200
 
 @app.route("/github/callback")
 def callback():

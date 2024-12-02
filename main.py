@@ -31,6 +31,19 @@ client = OpenAI(
 
 st.title("Codebase Bot")
 
+if "signed_in" not in st.session_state and st.button("Sign in with GitHub"):
+    
+    response = requests.get("https://selected-gently-swift.ngrok-free.app/github/auth")
+    auth_url = response.json()["auth_url"]
+    
+    st.markdown(f'<meta http-equiv="refresh" content="0;url={auth_url}">', unsafe_allow_html=True)
+    
+    st.session_state.signed_in = True
+
+elif "signed_in" in st.session_state and st.button("Sign out"):
+    
+    st.session_state.signed_in = False
+
 # Initialize chat history
 if "messages" not in st.session_state:
     st.session_state.messages = []
