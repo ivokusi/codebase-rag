@@ -122,7 +122,7 @@ def embed_documents(file_content, index_name, namespace):
         documents.append(doc)
 
 
-    vectorstore = PineconeVectorStore.from_documents(
+    PineconeVectorStore.from_documents(
         documents=documents,
         embedding=HuggingFaceEmbeddings(),
         index_name=index_name,

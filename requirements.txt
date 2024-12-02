@@ -8,4 +8,6 @@ langchain
 streamlit
 pygithub
 tiktoken
+requests
 openai
+flask
